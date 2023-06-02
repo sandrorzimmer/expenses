@@ -6,6 +6,7 @@ const router = express.Router();
 
 router
     .get("/expenses", ExpenseController.showExpenses, paginate)
+    .get("/expenses/search", ExpenseController.showExpensesByFilter, paginate)
     .get("/expenses/:id", ExpenseController.showExpenseById)
     .post("/expenses", ExpenseController.addExpense)
     .put("/expenses/:id", ExpenseController.updateExpense)

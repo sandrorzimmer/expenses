@@ -4,12 +4,12 @@ import autopopulate from "mongoose-autopopulate";
 const expenseSchema = new mongoose.Schema(
     {
         id: { type: String },
-        expense: {
+        title: {
             type: String,
             required: [true, "Expense is required."],
             validate: {
-                validator: function (expense) {
-                    return expense.trim().length > 0
+                validator: function (title) {
+                    return title.trim().length > 0
                 },
                 message: "Expense cannot be blank."
             }
