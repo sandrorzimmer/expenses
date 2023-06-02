@@ -1,5 +1,5 @@
-import express from "express";
 import categories from "./categoriesRoutes.js"
+import paymentMethods from "./paymentMethodsRoutes.js"
 
 const routes = (app) => {
     app.route("/").get((req, res) => {
@@ -9,8 +9,8 @@ const routes = (app) => {
     });
 
     app.use(
-        // express.json(),
-        categories
+        categories,
+        paymentMethods
     )
 }
 

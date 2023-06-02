@@ -1,4 +1,3 @@
-import BaseError from "../errors/BaseError.js";
 import NotFound from "../errors/NotFound.js";
 import Category from "../models/Category.js";
 
