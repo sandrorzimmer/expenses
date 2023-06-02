@@ -2,7 +2,7 @@ import BadRequest from "../errors/BadRequest.js";
 
 async function paginate(req, res, next) {
     try {
-        let { limit = 5, page = 1, sortBy = "_id:1" } = req.query;
+        let { limit = 10, page = 1, sortBy = "_id:1" } = req.query;
         let [sortField, sortOrder] = sortBy.split(":");
 
         limit = parseInt(limit);

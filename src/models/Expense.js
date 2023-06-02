@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import autopopulate from "mongoose-autopopulate";
 
 const expenseSchema = new mongoose.Schema(
     {
@@ -23,7 +24,6 @@ const expenseSchema = new mongoose.Schema(
         },
         date: {
             type: Date,
-            required: true,
             default: new Date()
         },
         category: {
@@ -41,10 +41,14 @@ const expenseSchema = new mongoose.Schema(
     }
 );
 
+//Convert the amount in the database (in cents) to amount in actual currency
+//(e.g, euros)
 function formatAmount(amount) {
     return (amount / 100).toFixed(2);
 };
 
+//Convert the inserted amount in actual currency (e.g., euros) to amount in
+//cents, to save in database
 function convertAmount(amount) {
     return Math.round(parseFloat(amount) * 100);
 }
