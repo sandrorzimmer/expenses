@@ -6,18 +6,18 @@ const expenseSchema = new mongoose.Schema(
         id: { type: String },
         title: {
             type: String,
-            required: [true, "Expense is required."],
+            required: [true, "Title is required"],
             validate: {
                 validator: function (title) {
                     return title.trim().length > 0
                 },
-                message: "Expense cannot be blank."
+                message: "Title cannot be blank."
             }
         },
         description: { type: String },
         amount: {
             type: Number,
-            required: [true, "Amount is required."],
+            required: [true, "Amount is required"],
             default: 0,
             get: formatAmount,
             set: convertAmount
@@ -52,6 +52,21 @@ function formatAmount(amount) {
 function convertAmount(amount) {
     return Math.round(parseFloat(amount) * 100);
 }
+
+//Cutomize error message for blank category and/or paymentMethod
+//before sending the error to errorHandler.js
+expenseSchema.pre("validate", function (next) {
+    const error = this.validateSync();
+    if (error && error.errors["category"]) {
+        error.errors["category"].message = "Category is required";
+    }
+
+    if (error && error.errors["paymentMethod"]) {
+        error.errors["paymentMethod"].message = "Payment method is required";
+    }
+
+    next(error);
+});
 
 expenseSchema.plugin(autopopulate);
 
