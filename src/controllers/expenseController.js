@@ -83,9 +83,6 @@ class ExpenseController {
 
             const [startDate, endDate] = getRangeDate(currentYear, currentMonth);
 
-            console.log(startDate);
-            console.log(endDate);
-
             const searchExpenses = Expense
                 .find({
                     date: {
@@ -162,7 +159,6 @@ class ExpenseController {
                 res.status(200).json([]);
             }
         } catch (error) {
-            console.log(error)
             next(error);
         }
     }
