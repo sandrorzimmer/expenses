@@ -24,7 +24,11 @@ const expenseSchema = new mongoose.Schema(
         },
         date: {
             type: Date,
-            default: new Date()
+            default: () => {
+                const currentDate = new Date();
+                currentDate.setHours(0, 0, 0, 0); //set hours to 00:00:00.000
+                return currentDate;
+            },
         },
         category: {
             type: mongoose.Schema.Types.ObjectId,
@@ -40,6 +44,9 @@ const expenseSchema = new mongoose.Schema(
         }
     }
 );
+
+//Enable model to use getter to convert cents to actual currency
+expenseSchema.set("toJSON", { getters: true });
 
 //Convert the amount in the database (in cents) to amount in actual currency
 //(e.g, euros)
