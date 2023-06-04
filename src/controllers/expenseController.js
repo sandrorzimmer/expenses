@@ -77,6 +77,76 @@ class ExpenseController {
         }
     }
 
+    static showExpensesCurrentMonth = async (req, res, next) => {
+        try {
+            const [currentYear, currentMonth] = getCurrentYearMonth();
+
+            const [startDate, endDate] = getRangeDate(currentYear, currentMonth);
+
+            console.log(startDate);
+            console.log(endDate);
+
+            const searchExpenses = Expense
+                .find({
+                    date: {
+                        $gte: startDate,
+                        $lte: endDate
+                    }
+                });
+
+            req.result = searchExpenses;
+
+            next();
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    static showExpensesLastMonth = async (req, res, next) => {
+        try {
+            const [currentYear, currentMonth] = getCurrentYearMonth();
+
+            const [startDate, endDate] = getRangeDate(currentYear, currentMonth - 1);
+
+            const searchExpenses = Expense
+                .find({
+                    date: {
+                        $gte: startDate,
+                        $lte: endDate
+                    }
+                });
+
+            req.result = searchExpenses;
+
+            next();
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    static showExpensesByYearMonth = async (req, res, next) => {
+        try {
+            const targetYear = req.params.year;
+            const targetMonth = req.params.month;
+
+            const [startDate, endDate] = getRangeDate(targetYear, targetMonth);
+
+            const searchExpenses = Expense
+                .find({
+                    date: {
+                        $gte: startDate,
+                        $lte: endDate
+                    }
+                });
+
+            req.result = searchExpenses;
+
+            next();
+        } catch (error) {
+            next(error);
+        }
+    }
+
     static showExpensesByFilter = async (req, res, next) => {
         try {
             const search = await searchHandling(req.query);
@@ -96,6 +166,26 @@ class ExpenseController {
             next(error);
         }
     }
+}
+
+//Return month and year to search
+function getRangeDate(year, month) {
+    const startDate = new Date(year, month - 1, 1); //first day of the month
+    const endDate = new Date(year, month, 0); //last day of the month
+
+    return [startDate, endDate];
+}
+
+//Return array with current year and current month (1 - 12)
+function getCurrentYearMonth() {
+    //Get current date
+    const currentDate = new Date();
+
+    //Extract year and month from current date
+    const currentMonth = currentDate.getMonth() + 1; //months are zero based (0-11)
+    const currentYear = currentDate.getFullYear();
+
+    return [currentYear, currentMonth];
 }
 
 async function searchHandling(params) {
