@@ -11,7 +11,7 @@ const expenseSchema = new mongoose.Schema(
                 validator: function (title) {
                     return title.trim().length > 0
                 },
-                message: "Title cannot be blank."
+                message: "Title cannot be blank"
             }
         },
         description: { type: String },
@@ -51,18 +51,19 @@ function formatAmount(amount) {
 //cents, to save in database
 function convertAmount(amount) {
     return Math.round(parseFloat(amount) * 100);
-}
+};
 
-//Cutomize error message for blank category and/or paymentMethod
+//Customize error message for blank category and/or paymentMethod
 //before sending the error to errorHandler.js
 expenseSchema.pre("validate", function (next) {
     const error = this.validateSync();
-    if (error && error.errors["category"]) {
-        error.errors["category"].message = "Category is required";
+    if (error && error.errors["category"] instanceof mongoose.CastError) {
+        // console.log(error.errors["category"].message);
+        error.errors["category"].message = "Category cannot be blank";
     }
 
-    if (error && error.errors["paymentMethod"]) {
-        error.errors["paymentMethod"].message = "Payment method is required";
+    if (error && error.errors["paymentMethod"] instanceof mongoose.CastError) {
+        error.errors["paymentMethod"].message = "Payment method cannot be blank";
     }
 
     next(error);
