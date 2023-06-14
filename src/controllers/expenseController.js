@@ -3,7 +3,7 @@ import Category from "../models/Category.js";
 import PaymentMethod from "../models/PaymentMethod.js";
 import Expense from "../models/Expense.js";
 import BadRequest from "../errors/BadRequest.js";
-import { getRangeDate, getCurrentYearMonth, checkDateIsValid } from "../utils/dateTools.js";
+import { getRangeDate, getCurrentYearMonth } from "../utils/dateTools.js";
 
 class ExpenseController {
     static showExpenses = async (req, res, next) => {
@@ -127,19 +127,23 @@ class ExpenseController {
         try {
             const targetYear = parseInt(req.params.year);
 
-            const [startDate, endDate] = getRangeDate(targetYear);
+            if (getRangeDate(targetYear) === false) {
+                next(new BadRequest("Year is not valid"));
+            } else {
+                const [startDate, endDate] = getRangeDate(targetYear);
 
-            const searchExpenses = Expense
-                .find({
-                    date: {
-                        $gte: startDate,
-                        $lte: endDate
-                    }
-                });
+                const searchExpenses = Expense
+                    .find({
+                        date: {
+                            $gte: startDate,
+                            $lte: endDate
+                        }
+                    });
 
-            req.result = searchExpenses;
+                req.result = searchExpenses;
 
-            next();
+                next();
+            }
         } catch (error) {
             next(error);
         }
@@ -151,7 +155,7 @@ class ExpenseController {
             const targetMonth = parseInt(req.params.month);
 
             if (getRangeDate(targetYear, targetMonth) === false) {
-                next(new BadRequest("Date is not valid"))
+                next(new BadRequest("Date is not valid"));
             } else {
                 const [startDate, endDate] = getRangeDate(targetYear, targetMonth);
 

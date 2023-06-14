@@ -60,12 +60,11 @@ function convertAmount(amount) {
     return Math.round(parseFloat(amount) * 100);
 };
 
-//Customize error message for blank category and/or paymentMethod
+//Customize error message for blank category and/or blank paymentMethod
 //before sending the error to errorHandler.js
 expenseSchema.pre("validate", function (next) {
     const error = this.validateSync();
     if (error && error.errors["category"] instanceof mongoose.CastError) {
-        // console.log(error.errors["category"].message);
         error.errors["category"].message = "Category cannot be blank";
     }
 

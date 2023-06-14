@@ -14,8 +14,12 @@ function getRangeDate(year, month, day) {
 
         //Only year is provided
         if (month === undefined && day === undefined) {
-            startDate = (new Date(parseInt(year), 0, 1)).toISOString();
-            endDate = (new Date(parseInt(year), 11, 31)).toISOString();
+            if (checkDateIsValid(`${year}-01-01`) === false) {
+                return false;
+            } else {
+                startDate = (new Date(parseInt(year), 0, 1)).toISOString();
+                endDate = (new Date(parseInt(year), 11, 31)).toISOString();
+            }
 
             //Year and month are provided
         } else if (day === undefined) {
@@ -63,6 +67,7 @@ function checkDateIsValid(date) {
         parsedYear !== targetDate.getFullYear() ||
         parsedMonth !== targetDate.getMonth() ||
         parsedDay !== targetDate.getDate() ||
+        parsedYear < 1900 || parsedYear > 2100 ||
         parsedMonth < 0 || parsedMonth > 11 ||
         parsedDay < 1 || parsedDay > 31
     ) {
@@ -84,4 +89,4 @@ function getCurrentYearMonth() {
     return [currentYear, currentMonth];
 }
 
-export { getRangeDate, checkDateIsValid, getCurrentYearMonth };
+export { getRangeDate, getCurrentYearMonth };
