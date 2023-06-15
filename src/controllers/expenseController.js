@@ -36,11 +36,20 @@ class ExpenseController {
 
     static addExpense = async (req, res, next) => {
         try {
-            const expense = new Expense(req.body);
+            const categoryId = req.body.category;
+            const paymentMethodId = req.body.paymentMethod;
 
-            const expenseResult = await expense.save();
+            const categoryResult = await Category.findById({ _id: categoryId });
+            const paymentMethodResult = await PaymentMethod.findById({ _id: paymentMethodId });
 
-            res.status(201).json(expenseResult);
+            //Check for category and payment method
+            if (categoryResult === null || paymentMethodResult === null) {
+                next(new NotFound("Category or payment method not found"));
+            } else {
+                const expense = new Expense(req.body);
+                const expenseResult = await expense.save();
+                res.status(201).json(expenseResult);
+            }
         } catch (error) {
             next(error);
         }
@@ -51,12 +60,23 @@ class ExpenseController {
             const expenseId = req.params.id;
             const updatedExpense = req.body;
 
-            const expenseResult = await Expense.findByIdAndUpdate({ _id: expenseId }, updatedExpense, { new: true });
+            const categoryId = req.body.category;
+            const paymentMethodId = req.body.paymentMethod;
 
-            if (expenseResult) {
-                res.status(200).json(expenseResult);
+            const categoryResult = await Category.findById({ _id: categoryId });
+            const paymentMethodResult = await PaymentMethod.findById({ _id: paymentMethodId });
+
+            //Check for category and payment method
+            if (categoryResult === null || paymentMethodResult === null) {
+                next(new NotFound("Category or payment method not found"));
             } else {
-                next(new NotFound("Expense ID not found"));
+                const expenseResult = await Expense.findByIdAndUpdate({ _id: expenseId }, updatedExpense, { new: true });
+
+                if (expenseResult) {
+                    res.status(200).json(expenseResult);
+                } else {
+                    next(new NotFound("Expense ID not found"));
+                }
             }
         } catch (error) {
             next(error);
