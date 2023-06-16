@@ -293,3 +293,67 @@ For example:
     This is a combined form, using pagination and sorting.
     
     Retrieves 20 expenses, sorted by title in ascending order, skipping the first 20 items.
+
+# Error handling
+
+The API uses the following set of status responses and error messages according to the situation.
+
+- **status: 400 - message: One or more provided data are incorrect**
+    - An invalid date was provided in search.
+    - An invalid ID value was provided.
+- **status: 400 - message: The following errors were found: <field> is required**
+    - A required field is missing.
+- **status: 404 - message: Page not found**
+    - The page does not exist. There might be a typo in the URL.
+- **status: 500 - message: Internal server error**
+    - An unexpected error has occurred on the server while processing the request.
+
+# Security
+
+This API is not currently implementing security measures, like encryption, authentication or authorization mechanisms.
+
+# Testing
+
+This API does not currently provide automated tests. All performed tests were realized manually during development.
+
+# Contribution
+
+Contributions are highly appreciated and help improve the project. To contribute, please follow these guidelines:
+
+## Bug reports
+
+If you encounter a bug or issue with the API, please help us by submitting a detailed bug report. Follow these steps to report a bug:
+
+1. Check the existing **[GitHub Issues](https://github.com/sandrorzimmer/expenses/issues)** to see if the bug has already been reported.
+2. If the bug hasn't been reported, **[create a new issue](https://github.com/sandrorzimmer/expenses/issues/new)**.
+3. Provide a clear and descriptive title for the issue.
+4. Include steps to reproduce the bug, along with any relevant code snippets or error messages.
+5. Add any additional context or information that might be helpful for understanding and resolving the issue.
+
+## Feature requests
+
+If you have a suggestion or would like to request a new feature for the Expenses API, please follow these steps:
+
+1. Check the existing **[GitHub Issues](https://github.com/sandrorzimmer/expenses/issues)** to see if the feature has already been requested.
+2. If the feature hasn't been requested, **[create a new issue](https://github.com/sandrorzimmer/expenses/issues/new)**.
+3. Clearly describe the feature you would like to see added and explain its purpose and potential benefits.
+4. Provide any relevant examples, use cases, or implementation details that can help in understanding the feature request.
+
+## Pull requests
+
+We welcome pull requests that address bug fixes, feature enhancements, or code improvements. To submit a pull request:
+
+1. Fork the repository and create a new branch for your changes.
+2. Make your changes and ensure the code follows the existing coding style and conventions.
+3. Write tests to cover the changes if applicable.
+4. Commit your changes with a clear and descriptive commit message.
+5. Open a pull request against the ***main*** branch of the original repository.
+6. Provide a detailed description of the changes and their purpose.
+
+Please note that all contributions are subject to review and may require some iteration before they are merged into the main codebase.
+
+Thank you for considering contributing to the Expenses API! Your contributions play a valuable role in enhancing the API and making it more robust and feature-rich.
+
+# License
+
+This project is licensed under the **[MIT License](https://chat.openai.com/c/LICENSE)**.
